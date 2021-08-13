@@ -1,11 +1,11 @@
 package com.wt.test.actuator.oom;
 
 import sun.misc.Signal;
-import sun.misc.SignalHandler;
 
 import java.util.concurrent.TimeUnit;
 
 /**
+ * MacOS下得用 kill -31 PID
  * @author 一贫
  * @date 2021/8/13
  */
