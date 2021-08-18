@@ -1,7 +1,9 @@
 package com.wt.test.actuator.feign;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -64,4 +66,30 @@ public class JacksonUtil {
             throw new RuntimeException(msg, e);
         }
     }
+
+    public JsonNode readValue(String content) throws RuntimeException {
+        try {
+            return objectMapper.readTree(content);
+        } catch (IOException e) {
+            String msg = String.format("Jackson转换对象失败,String:{}", content);
+            log.error(msg, e);
+            throw new RuntimeException(msg, e);
+        }
+    }
+
+    public JsonNode readValue(byte[] content) throws RuntimeException {
+        try {
+            return objectMapper.readTree(content);
+        } catch (IOException e) {
+            String msg = null;
+            try {
+                msg = String.format("Jackson转换对象失败,String:{}", new String(content, "utf-8"));
+            } catch (UnsupportedEncodingException ue) {
+                log.error("byte数组转String失败", ue);
+            }
+            log.error(msg, e);
+            throw new RuntimeException(msg, e);
+        }
+    }
+
 }

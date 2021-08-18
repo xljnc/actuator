@@ -1,11 +1,11 @@
 package com.wt.test.actuator.feign;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import feign.Headers;
 import feign.RequestLine;
 import org.springframework.cloud.openfeign.FeignClient;
 
 import java.net.URI;
-import java.util.Map;
 
 /**
  * @author 一贫
@@ -16,9 +16,9 @@ public interface OauthFeignClient {
 
     @RequestLine("POST")
     @Headers({"Content-Type: application/json","Accept: application/json"})
-    Map<String,String> post(URI uri);
+    JsonNode post(URI uri);
 
     @RequestLine("GET")
     @Headers({"Content-Type: application/json","Accept: application/json"})
-    Map<String,String> get(URI uri);
+    JsonNode get(URI uri);
 }
