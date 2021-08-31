@@ -35,12 +35,14 @@ public class OAuth2Controller {
         String tokenUrl = new StringBuilder("https://gitee.com/oauth/token?grant_type=authorization_code&").append("client_id=").append("")
                 .append("&client_secret=").append("")
                 .append("&code=").append(code).append("&redirect_uri=").append("http://localhost:8888/oauth2/welcome").toString();
-        JsonNode response = oauthFeignClient.post(UriUtil.convert(tokenUrl));
-        System.out.println("access-token:" + jacksonUtil.writeValueAsString(response));
+        String resStr = oauthFeignClient.post(UriUtil.convert(tokenUrl));
+        System.out.println("access-token:" + resStr);
+        JsonNode response = jacksonUtil.readValue(resStr);
         String token = response.get("access_token").asText();
         String infoUrl = new StringBuilder("https://gitee.com/api/v5/user?access_token=").append(token).toString();
-        response = oauthFeignClient.get(UriUtil.convert(infoUrl));
-        System.out.println("info:" + jacksonUtil.writeValueAsString(response));
+        resStr = oauthFeignClient.get(UriUtil.convert(infoUrl));
+        System.out.println("info:" + resStr);
+        response = jacksonUtil.readValue(resStr);
         model.addAttribute("name", response.get("name").asText());
         return "welcome";
     }

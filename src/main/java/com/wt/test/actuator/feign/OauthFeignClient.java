@@ -16,9 +16,9 @@ public interface OauthFeignClient {
 
     @RequestLine("POST")
     @Headers({"Content-Type: application/json","Accept: application/json"})
-    JsonNode post(URI uri);
+    String post(URI uri);
 
     @RequestLine("GET")
     @Headers({"Content-Type: application/json","Accept: application/json"})
-    JsonNode get(URI uri);
+    String get(URI uri);
 }
