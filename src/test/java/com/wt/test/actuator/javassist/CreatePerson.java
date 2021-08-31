@@ -24,9 +24,10 @@ public class CreatePerson {
         // 3. 生成 getter、setter 方法
         cPerson.addMethod(CtNewMethod.setter("setName", fName));
         cPerson.addMethod(CtNewMethod.getter("getName", fName));
-//        // 4. 添加无参的构造函数
-//        CtConstructor cons = new CtConstructor(new CtClass[]{}, cPerson);
-//        cPerson.addConstructor(cons);
+        // 4. 添加无参的构造函数
+        CtConstructor cons = new CtConstructor(new CtClass[]{}, cPerson);
+        cons.setBody("{}");
+        cPerson.addConstructor(cons);
 //        // 5. 添加有参的构造函数
 //        CtConstructor conWithArgs = new CtConstructor(new CtClass[]{pool.get("java.lang.String")}, cPerson);
 //        // $0=this / $1,$2,$3... 代表方法参数
@@ -42,14 +43,19 @@ public class CreatePerson {
 //        cPerson.writeFile(System.getProperty("user.dir") + "/target/test-classes/");
 
         //反射调用
+        CtClass ctPeople = pool.get("com.wt.test.actuator.javassist.People");
+        cPerson.setInterfaces(new CtClass[]{ctPeople});
         Class<?> personClazz = cPerson.toClass();
-        Object obj = personClazz.newInstance();
-        // 设置值
-        Method setName = personClazz.getMethod("setName", String.class);
-        setName.invoke(obj, "cunhua");
-        // 输出值
-        Method execute = personClazz.getMethod("printName");
-        execute.invoke(obj);
+        People obj = (People) personClazz.getDeclaredConstructor().newInstance();
+//        // 设置值
+//        Method setName = personClazz.getMethod("setName", String.class);
+//        setName.invoke(obj, "cunhua");
+//        // 输出值
+//        Method execute = personClazz.getMethod("printName");
+//        execute.invoke(obj);
+        obj.setName("cunhua");
+        obj.printName();
+
 //        // 设置类路径
 //        pool.appendClassPath(System.getProperty("user.dir") + "/target/test-classes/");
 //        CtClass ctClass = pool.get("com.wt.test.actuator.javassist.Person");
